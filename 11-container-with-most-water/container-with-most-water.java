@@ -17,7 +17,7 @@ class Solution {
     }
     public int maxArea(int[] arr) {
        int n=arr.length;
-       int max=ans(0,n-1,arr);
-       return max; 
+       return ans(0,n-1,arr);
+ 
     }
 }
