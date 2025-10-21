@@ -1,6 +1,7 @@
 import java.util.*;
 class Solution {
     public List<List<Integer>> fourSum(int[] arr, int target) {
+        if(arr.length<4)return new ArrayList<>();
         Set<ArrayList<Integer>>result=new HashSet<>();
         Arrays.sort(arr);
         for(int i=0;i<arr.length-3;i++){
