@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     public String removeKdigits(String num, int k) {
         Stack<Character> st = new Stack<>();
@@ -23,7 +21,8 @@ class Solution {
         while (sb.length() > 1 && sb.charAt(0) == '0') {
             sb.deleteCharAt(0);
         }
-        if(sb.length()==0)return "0";
+        if (sb.length() == 0)
+            return "0";
         return sb.toString();
     }
 }
