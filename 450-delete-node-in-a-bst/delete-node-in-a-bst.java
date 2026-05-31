@@ -10,18 +10,15 @@ class Solution {
             }
             //for 2 child
             else if (root.left != null && root.left.val == val && root.left.left != null && root.left.right != null) {
-                TreeNode curr = root.left;
-                TreeNode temp = curr.left;
-                TreeNode parent = curr;
-                while (temp.right != null) {
-                    parent = temp;
-                    temp = temp.right;
+                TreeNode curr=root.left;
+                TreeNode p=curr.left;
+                while(p.right!=null){
+                    p=p.right;
                 }
-                curr.val = temp.val;
-                if (parent == curr)
-                    parent.left = temp.left;
-                else
-                    parent.right = temp.left;
+                delete(root,p.val);
+                p.left=curr.left;
+                p.right=curr.right;
+                root.left=p;
             }
             //for 1 child
             else if (root.left != null && root.left.val == val) {
@@ -40,19 +37,18 @@ class Solution {
             // for 2 child
             else if (root.right != null && root.right.val == val && root.right.left != null
                     && root.right.right != null) {
-                TreeNode curr = root.right;
-                TreeNode temp = curr.right;
-                TreeNode parent = curr;
-                while (temp.left != null) {
-                    parent = temp;
-                    temp = temp.left;
+                TreeNode curr=root.right;
+                TreeNode p=curr.left;
+                while(p.right!=null){
+                    p=p.right;
                 }
-                curr.val = temp.val;
-                if (parent == curr)
-                    parent.right = temp.right;
-                else
-                    parent.left = temp.right;
-            } else if (root.right != null && root.right.val == val) {
+                delete(root,p.val);
+                p.left=curr.left;
+                p.right=curr.right;
+                root.right=p;
+            }
+            //for 1 child
+            else if (root.right != null && root.right.val == val) {
                 if (root.right.left != null && root.right.right == null) {
                     root.right = root.right.left;
                 } else
