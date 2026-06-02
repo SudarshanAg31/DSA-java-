@@ -4,14 +4,9 @@ class Solution {
     public void fun(TreeNode root) {
         if (root == null)
             return;
-        if (root.left == null && root.right == null) {
-            sum += root.val;
-            root.val = sum;
-            return;
-        }
         fun(root.right);
-        sum += root.val;
-        root.val = sum;
+        root.val += sum;
+        sum = root.val;
         fun(root.left);
     }
 
