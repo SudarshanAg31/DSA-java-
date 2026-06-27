@@ -17,11 +17,11 @@ class Solution {
         else{
             if(size[a]>size[b]){
             p[b]=a;
-            size[a]++;
+            size[a]+=size[b];
             }
             else{
             p[a]=b;
-            size[b]++;
+            size[b]+=size[a];
             }
         }
     }
