@@ -1,34 +1,53 @@
 class Solution {
-    public void bfs(int i, int[][] graph, int[] check) {
-        Queue<Integer> q = new LinkedList<>();
-        check[i] = 0;
-        q.add(i);
-        while (!q.isEmpty()) {
-            int x = q.remove();
-            int color = check[x];
-            for (int ele : graph[x]) {
-                if (check[ele] == check[x]) {
-                    ans = false;
-                    return;
-                }
-                if (check[ele] == -1) {
-                    check[ele] = 1 - color;
-                    q.add(ele);
-                }
+    static int[] p;
+    static int[] size;
+    static boolean[] color;
+
+    public int find(int a) {
+        if (p[a] == a)
+            return a;
+        int led = find(p[a]);
+        p[a] = led;
+        return led;
+    }
+
+    public void union(int i, int j) {
+        int a = find(i);
+        int b = find(j);
+        if (a != b) {
+            if (size[a] > size[b]) {
+                p[b] = a;
+                size[a] += size[b];
+                color[j] = !color[i];
+            } else {
+                p[a] = b;
+                size[b] += size[a];
+                color[i] = !color[j];
             }
         }
     }
 
-    static boolean ans;
-
     public boolean isBipartite(int[][] graph) {
-        ans = true;
-        int[] check = new int[graph.length];
-        Arrays.fill(check, -1);
-        for (int i = 0; i < graph.length; i++) {
-            if (check[i] == -1)
-                bfs(i, graph, check);
+        int n = graph.length;
+        p = new int[n];
+        size = new int[n];
+        color = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            p[i] = i;
+            size[i] = 1;
+            color[i] = false;
         }
-        return ans;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < graph[i].length; j++) {
+                if (i < graph[i][j]) {
+                    if (find(i) == find(graph[i][j])) {
+                        if (color[i] == color[graph[i][j]])
+                            return false;
+                    } else
+                        union(i, graph[i][j]);
+                }
+            }
+        }
+        return true;
     }
 }
