@@ -1,0 +1,13 @@
+class Solution {
+    public int hammingDistance(int start, int goal) {
+        int count=0;
+        for(int i=0;i<31;i++){
+            if((start&1)!=(goal&1)){
+                count++;
+            }
+            start>>=1;
+            goal>>=1;
+        }
+        return count;
+    }
+}
