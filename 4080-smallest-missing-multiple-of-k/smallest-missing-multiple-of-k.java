@@ -1,15 +1,18 @@
 class Solution {
-    public int missingMultiple(int[] arr, int k) {
-        Set<Integer>st=new HashSet<>();
-        for(int i=0;i<arr.length;i++){
-            st.add(arr[i]);
+    public int missingMultiple(int[] nums, int k) {
+        Set<Integer> st = new HashSet<>();
+        for (int i : nums) {
+            st.add(i);
         }
-        int mult=k;
-        while(true){
-            if(!st.contains(mult)){
-                return mult;
+        int i = 1;
+        int ans = 0;
+        while (i <= 101) {
+            ans = k * i;
+            if (!st.contains(ans)) {
+                return ans;
             }
-            mult+=k;
+            i++;
         }
+        return 0;
     }
 }
