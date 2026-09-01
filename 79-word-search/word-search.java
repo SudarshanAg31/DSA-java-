@@ -1,81 +1,45 @@
+
+// ye code tere bhai ne kiya tha ladle 
 class Solution {
-    public boolean isvalid(char[][] board,int row,int col ,
-                            String word,int idx){
-
-        int n=board.length;
-        int nn=board[0].length;
-
-        if(idx==word.length()) return true;
-
-        char ch=word.charAt(idx);
-
-        char temp=board[row][col];
-        board[row][col]='X';
-
-        // up
-        int i=row-1;
-        int j=col;
-        if(i>=0&&ch==board[i][j]){
-            if(isvalid(board,i,j,word,idx+1)){
-                board[row][col]=temp;
-                return true;
-            }
+    public boolean helper(char[][] arr , String word , int m , int n , int i , boolean[][]visit , int row  , int col){
+        if(i==word.length()){
+            return true;
         }
-
-        // down
-        i=row+1;
-        j=col;
-        if(i<n&&ch==board[i][j]){
-            if(isvalid(board,i,j,word,idx+1)){
-                board[row][col]=temp;
-                return true;
-            }
-        }
-
-        // left
-        i=row;
-        j=col-1;
-
-        if(j>=0&&ch==board[i][j]){
-            if(isvalid(board,i,j,word,idx+1)){
-                board[row][col]=temp;
-                return true;
-            }
-        }
+        char ch = word.charAt(i); // agla wala
+        boolean right = false , down = false , left = false  , up = false;
+        visit[row][col] = true;
         // right
-        i=row;
-        j=col+1;
-        if(j<nn&&ch==board[i][j]){
-            if(isvalid(board,i,j,word,idx+1)){
-                board[row][col]=temp;
-                return true;
+        if(col<n-1 && arr[row][col+1]==ch && visit[row][col+1]==false){
+           right =  helper(arr , word , m , n , i+1 , visit , row , col+1);
+        }
+        // down
+        if(row<m-1 && arr[row+1][col]==ch && visit[row+1][col]==false){
+            down = helper(arr , word , m , n , i+1 , visit , row+1 , col);
+        }
+        // left
+        if(col>0 && arr[row][col-1]==ch && visit[row][col-1]==false){
+            left = helper(arr , word , m , n , i+1 , visit , row , col-1);
+        }
+        // up
+        if(row>0 && arr[row-1][col]==ch && visit[row-1][col]==false){
+           up =  helper(arr , word , m , n , i+1 , visit , row-1 , col);
+        }
+        visit[row][col] = false;
+        return right || down || left || up;
+    }
+    public boolean exist(char[][] arr, String word) {
+        int m = arr.length;
+        int n = arr[0].length;
+        boolean[][]visit = new boolean[m][n];
+        boolean ans = false;
+        for(int i = 0 ; i<m ; i++){
+            for(int j = 0 ; j<n ; j++){
+                if(arr[i][j]==word.charAt(0)){
+                    ans = helper(arr, word , m , n , 1 , visit , i , j);
+                    if(ans==true) return ans;
+                }
             }
         }
-
-        board[row][col]=temp;
-        return false;
-    }
-
-    public boolean fun(char[][] board,String word,
-                       int row,int col){
-
-        if(col==board[0].length){
-            row++;
-            col=0;
-        }
-
-        if(row==board.length)
-            return false;
-
-        if(board[row][col]==word.charAt(0)){
-            if(isvalid(board,row,col,word,1))
-                return true;
-        }
-
-        return fun(board,word,row,col+1);
-    }
-
-    public boolean exist(char[][] board,String word){
-        return fun(board,word,0,0);
+        return ans;
     }
 }
