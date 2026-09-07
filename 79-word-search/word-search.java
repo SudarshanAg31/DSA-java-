@@ -1,45 +1,76 @@
-
-// ye code tere bhai ne kiya tha ladle 
 class Solution {
-    public boolean helper(char[][] arr , String word , int m , int n , int i , boolean[][]visit , int row  , int col){
-        if(i==word.length()){
+    static boolean ans=false;
+    public boolean check(int i,int j,int l,boolean[][] vis,char[][] board, String word){
+        if(l==word.length()){
+            ans=true;
             return true;
-        }
-        char ch = word.charAt(i); // agla wala
-        boolean right = false , down = false , left = false  , up = false;
-        visit[row][col] = true;
-        // right
-        if(col<n-1 && arr[row][col+1]==ch && visit[row][col+1]==false){
-           right =  helper(arr , word , m , n , i+1 , visit , row , col+1);
-        }
-        // down
-        if(row<m-1 && arr[row+1][col]==ch && visit[row+1][col]==false){
-            down = helper(arr , word , m , n , i+1 , visit , row+1 , col);
-        }
-        // left
-        if(col>0 && arr[row][col-1]==ch && visit[row][col-1]==false){
-            left = helper(arr , word , m , n , i+1 , visit , row , col-1);
-        }
-        // up
-        if(row>0 && arr[row-1][col]==ch && visit[row-1][col]==false){
-           up =  helper(arr , word , m , n , i+1 , visit , row-1 , col);
-        }
-        visit[row][col] = false;
-        return right || down || left || up;
-    }
-    public boolean exist(char[][] arr, String word) {
-        int m = arr.length;
-        int n = arr[0].length;
-        boolean[][]visit = new boolean[m][n];
-        boolean ans = false;
-        for(int i = 0 ; i<m ; i++){
-            for(int j = 0 ; j<n ; j++){
-                if(arr[i][j]==word.charAt(0)){
-                    ans = helper(arr, word , m , n , 1 , visit , i , j);
-                    if(ans==true) return ans;
-                }
+            }
+        //left
+        int a=i;
+        int b=j-1;
+        if(0<=b&&!vis[a][b]){
+            char ch=board[a][b];
+            if(ch==word.charAt(l)){
+            vis[a][b]=true;
+            if(check(i,j-1,l+1,vis,board,word)){
+                return true;
+            }
+            vis[a][b]=false;
             }
         }
-        return ans;
+        //right
+        a=i;
+        b=j+1;
+        if(b<board[0].length&&!vis[a][b]){
+            char ch=board[a][b];
+            if(ch==word.charAt(l)){
+            vis[a][b]=true;
+            if(check(i,j+1,l+1,vis,board,word)){
+                return true;
+            }
+            vis[a][b]=false;
+            }
+        }
+        //buttom
+        a=i+1;
+        b=j;
+        if(a<board.length&&!vis[a][b]){
+            char ch=board[a][b];
+            if(ch==word.charAt(l)){
+            vis[a][b]=true;  
+            if(check(i+1,j,l+1,vis,board,word)){
+                return true;
+            }
+            vis[a][b]=false;  
+            }
+        }
+        a=i-1;
+        b=j;
+        if(a>=0&&!vis[a][b]){
+            char ch=board[a][b];
+            if(ch==word.charAt(l)){
+            vis[a][b]=true;
+            if(check(i-1,j,l+1,vis,board,word)){
+                return true;
+            }
+            vis[a][b]=false;
+            }
+        }
+        return false;
+    }
+    public boolean exist(char[][] board, String word) {
+        boolean[][] vis=new boolean [board.length][board[0].length];
+        for(int i =0;i<board.length;i++){
+            for(int j=0;j<board[i].length;j++){
+               if(!vis[i][j]&&word.charAt(0)==board[i][j]){
+                vis[i][j]=true;
+                if(check(i,j,1,vis,board,word)&&ans){
+                    return true;
+                }
+                vis[i][j]=false;
+               }
+            }
+        }
+        return false;
     }
 }
