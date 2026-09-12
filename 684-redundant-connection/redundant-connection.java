@@ -1,41 +1,36 @@
 class Solution {
-    static int[]p;
-    static int[]size;
-    public int find(int a){
-        if(p[a]==a)return a;
-        int led=find(p[a]);
-        p[a]=led;
-        return led;
-    }
-    public void union(int i,int j,int ans[]){
-        int a=find(i);
-        int b=find(j);
-        if(a==b){
-            ans[0]=i;
-            ans[1]=j;
-        }
-        else{
-            if(size[a]>size[b]){
-            p[b]=a;
-            size[a]+=size[b];
-            }
-            else{
-            p[a]=b;
-            size[b]+=size[a];
+    public boolean bfs(List<List<Integer>>adj,int s,int d){
+        boolean[] vis=new boolean [adj.size()+1];
+        Queue<Integer>q=new ArrayDeque<>();
+        q.add(s);
+        vis[s]=true;
+        while(!q.isEmpty()){
+            int temp=q.remove();
+            if(vis[d])return true;
+            for(int i:adj.get(temp)){
+                if(!vis[i]){
+                    q.add(i);
+                    vis[i]=true;
+                }
             }
         }
+        return false;
     }
     public int[] findRedundantConnection(int[][] edges) {
-        int n=edges.length;
-        p=new int[n+1];
-        size=new int[n+1];
-        for(int i=1;i<n+1;i++){
-            p[i]=i;
-            size[i]=1;
+        List<List<Integer>>adj=new ArrayList<>();
+        for (int i = 0; i <=edges.length ; i++) {
+            adj.add(new ArrayList<>());
         }
-        int ans[]=new int[2];
-        for(int i=0;i<n;i++){
-            union(edges[i][0],edges[i][1],ans);
+        int[]ans=new int [2];
+        for(int i=0;i<edges.length;i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            if(bfs(adj,u,v)){
+                ans[0]=u;
+                ans[1]=v;
+            }
+            adj.get(u).add(v);
+            adj.get(v).add(u);
         }
         return ans;
     }
