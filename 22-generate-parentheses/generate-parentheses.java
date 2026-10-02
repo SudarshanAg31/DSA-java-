@@ -1,19 +1,19 @@
 class Solution {
-    public void fun(int n,String str,List<String> ans,int s,int e){
+    public void fun(List<String>arr,String str,int n,int e,int i){
         if(str.length()==n*2){
-            ans.add(str);
+            arr.add(new String(str));
             return ;
         }
-        if(s<n){
-            fun(n,str+"(",ans,s+1,e);
+        if(i<n){
+            fun(arr,str+"(",n,e,i+1);
         }
-        if(e<s){
-            fun(n,str+")",ans,s,e+1);
+        if(e<i){
+            fun(arr,str+")",n,e+1,i);
         }
     }
     public List<String> generateParenthesis(int n) {
-        List<String> ans=new ArrayList<>();
-        fun(n,"",ans,0,0);
-        return ans;
+        List<String> arr=new ArrayList<>();
+        fun(arr,"",n,0,0);
+        return arr;
     }
 }
