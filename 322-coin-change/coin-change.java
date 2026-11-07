@@ -1,31 +1,27 @@
 class Solution {
-    public long fun(int i, int c, int[] coins, long[][] dp) {
-        if (i == coins.length) {
-            if (c == 0)
-                return 0;
-            else
-                return Integer.MAX_VALUE;
+    public int fun(int[] coins, int amount, int i,int [][]dp) {
+        if (amount == 0) {
+            return 0;
         }
-        if (dp[i][c] != -1)
-            return dp[i][c];
-        long skip = fun(i + 1, c, coins, dp);
-        if (c - coins[i] < 0)
-            return skip;
-        long take = 1 + fun(i, c - coins[i], coins, dp);
-        return dp[i][c] = Math.min(skip, take);
+        if (i >= coins.length || amount < 0) {
+            return Integer.MAX_VALUE / 2;
+        }
+        if(dp[amount][i]!=-1)return dp[amount][i];
+        int take = Integer.MAX_VALUE / 2;
+        int skip = Integer.MAX_VALUE / 2;
+        if (coins[i] <= amount) {
+            take = 1 + fun(coins, amount - coins[i], i,dp);
+        }
+        skip = fun(coins, amount, i + 1,dp);
+        return dp[amount][i]=Math.min(take, skip);
     }
 
     public int coinChange(int[] coins, int amount) {
-        long[][] dp = new long[coins.length][amount + 1];
-        for (int i = 0; i < coins.length; i++) {
-            for (int j = 0; j < amount + 1; j++) {
-                dp[i][j] = -1;
-            }
+        int[][]dp=new int[amount+1][coins.length+1];
+        for(int [] row: dp){
+            Arrays.fill(row,-1);
         }
-        int ans = (int) fun(0, amount, coins, dp);
-        if (ans == Integer.MAX_VALUE)
-            return -1;
-        else
-            return ans;
+        int x=fun(coins, amount, 0, dp);
+        return x==Integer.MAX_VALUE/2?-1:x;
     }
 }
