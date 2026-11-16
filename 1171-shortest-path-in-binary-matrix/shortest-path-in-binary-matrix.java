@@ -8,7 +8,6 @@ class Solution {
             this.j = j;
         }
     }
-
     public int shortestPathBinaryMatrix(int[][] grid) {
         int n = grid.length;
         Queue<pair> q = new ArrayDeque<>();
