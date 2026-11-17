@@ -1,25 +1,24 @@
 class Solution {
-    public int fun(int i, int j, StringBuilder text1, StringBuilder text2, int[][] dp) {
-        if (i == -1 || j == -1)
+    public int fun(int i,int j,String str1,String str2,int[][]dp){
+        if(i==str1.length()||j==str2.length()){
             return 0;
-        if (dp[i][j] != -1)
-            return dp[i][j];
-        if (text1.charAt(i) == text2.charAt(j)) {
-            return dp[i][j] = 1 + fun(i - 1, j - 1, text1, text2, dp);
-        } else {
-            return dp[i][j] = Math.max(fun(i - 1, j, text1, text2, dp), fun(i, j - 1, text1, text2, dp));
         }
+        int match=0,check1=0,check2=0;
+        if(dp[i][j]!=-1)return dp[i][j];
+        if(str1.charAt(i)==str2.charAt(j)){
+            match=1+fun(i+1,j+1,str1,str2,dp);
+        }
+        if(str1.charAt(i)!=str2.charAt(j)){
+            check1=fun(i+1,j,str1,str2,dp);
+            check2=fun(i,j+1,str1,str2,dp);
+        }
+        return dp[i][j]=match+Math.max(check1,check2);
     }
-
-    public int longestCommonSubsequence(String a, String b) {
-        StringBuilder text1 = new StringBuilder(a);
-        StringBuilder text2 = new StringBuilder(b);
-        int[][] dp = new int[text1.length()][text2.length()];
-        for (int i = 0; i < text1.length(); i++) {
-            for (int j = 0; j < text2.length(); j++) {
-                dp[i][j] = -1;
-            }
+    public int longestCommonSubsequence(String text1, String text2) {
+        int [][]dp=new int[text1.length()][text2.length()];
+        for(int[] row:dp){
+            Arrays.fill(row,-1);
         }
-        return fun(text1.length() - 1, text2.length() - 1, text1, text2, dp);
+        return fun(0,0,text1,text2,dp);
     }
 }
